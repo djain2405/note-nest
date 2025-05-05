@@ -18,9 +18,11 @@ struct StickyNoteView: View {
             Text(note.text)
                 .font(.headline)
                 .bold()
-                .lineLimit(nil) // Allow unlimited lines
+                .multilineTextAlignment(.leading)
+                .lineLimit(4) // Allow unlimited lines
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 5)
+                .padding([.horizontal], 10)
                 .foregroundColor(.black)
             
             Spacer()
@@ -83,7 +85,7 @@ struct StickyNoteView: View {
         .padding()
         .fixedSize(horizontal: false, vertical: true)
         .background(note.color)
-        .cornerRadius(20)
+        .cornerRadius(18)
         .shadow(radius: 5)
         .rotationEffect(.degrees(note.rotation))
         .onLongPressGesture {

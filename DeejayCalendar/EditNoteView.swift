@@ -14,6 +14,7 @@ struct EditNoteView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var showContactPicker = false
+    @State private var showLocationPicker = false
 
     
     var body: some View {
@@ -43,6 +44,22 @@ struct EditNoteView: View {
                 }
                 .padding()
                 
+                Button("📍 Pick Location") {
+                    showLocationPicker = true
+                }
+                .sheet(isPresented: $showLocationPicker) {
+                    LocationPickerView(selectedLocation: Binding(
+                        get: { note.location ?? "" },
+                        set: { note.location = $0 }
+                    ))
+                }
+                
+                if !(note.location ?? "").isEmpty {
+                    Text("📍 \(note.location ?? "")")
+                }
+                
+                Spacer()
+               
                 Button("Add Participant 👥") {
                     showContactPicker = true
                 }
