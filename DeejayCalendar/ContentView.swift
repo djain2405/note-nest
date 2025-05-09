@@ -28,7 +28,7 @@ extension Date {
     
     func smartDate() -> String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
+        formatter.dateFormat = "MMM d"
         return formatter.string(from: self)
     }
 

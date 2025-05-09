@@ -13,84 +13,44 @@ struct StickyNoteView: View {
     var onDelete: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            // Top: Note Text
+        VStack(alignment: .leading, spacing: 8) {
+            // Title
             Text(note.text)
-                .font(.headline)
+                .font(.title3)
                 .bold()
-                .multilineTextAlignment(.leading)
-                .lineLimit(4) // Allow unlimited lines
+                .padding(.bottom, 4)
+                .lineLimit(nil) // ← allow full wrapping
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.bottom, 5)
-                .padding([.horizontal], 10)
-                .foregroundColor(.black)
-            
-            Spacer()
-            
-            // Middle: Date and Time
-            VStack(alignment: .leading, spacing: 2) {
-                HStack {
-                    Image(systemName: "calendar")
-                    Text(note.date.smartDate())
-                }
-                .font(.caption)
-                .foregroundColor(.black.opacity(0.7))
-                
-                HStack {
-                    Image(systemName: "clock")
-                    Text(note.date.smartTime())
-                }
-                .font(.caption2)
-                .foregroundColor(.black.opacity(0.6))
-            }
-            .padding(5)
-            .background(Color.white.opacity(0.4))
-            .cornerRadius(8)
-            
-            // Middle: Location (if available)
-            if let location = note.location, !location.isEmpty {
-                HStack {
-                    Image(systemName: "mappin.and.ellipse")
-                    Text(location)
-                }
-                .font(.caption2)
-                .foregroundColor(.black.opacity(0.6))
-                .padding(5)
-                .background(Color.white.opacity(0.4))
-                .cornerRadius(8)
-            }
-            
-            // Bottom: Participants (if any)
+
+            // Participants
             if !note.participants.isEmpty {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Participants:")
-                        .font(.caption2)
-                        .bold()
-                        .foregroundColor(.black.opacity(0.8))
-                    
-                    ForEach(note.participants.prefix(2), id: \.self) { participant in
-                        HStack {
-                            Image(systemName: "person.crop.circle")
-                            Text(participant)
-                        }
-                        .font(.caption2)
-                        .foregroundColor(.black.opacity(0.6))
-                    }
-                }
-                .padding(5)
-                .background(Color.white.opacity(0.4))
-                .cornerRadius(8)
+                Text("👥 " + note.participants.prefix(3).joined(separator: ", "))
+                    .font(.subheadline)
             }
+
+            // Location
+            if let location = note.location, !location.isEmpty {
+                Text("📍 \(location)")
+                    .font(.subheadline)
+            }
+
+            Spacer()
+
+            // Date & Time
+            HStack {
+                Text("🗓 \(note.date.smartDate())")
+                Spacer()
+                Text("⏰ \(note.date.smartTime())")
+            }
+            .font(.caption)
+            .padding(.top, 6)
         }
         .padding()
-        .fixedSize(horizontal: false, vertical: true)
+        .frame(width: 180)
+        .frame(minHeight: 200)
         .background(note.color)
-        .cornerRadius(18)
+        .cornerRadius(16)
         .shadow(radius: 5)
-        .rotationEffect(.degrees(note.rotation))
-        .onLongPressGesture {
-            onDelete()
-        }
     }
 }
 
